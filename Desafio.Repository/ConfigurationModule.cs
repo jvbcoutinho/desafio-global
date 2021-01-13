@@ -7,11 +7,11 @@ namespace Desafio.Repository
 {
     public static class ConfigurationModule
     {
-        public static void RegisterRepository(this IServiceCollection services, string connectionString)
+        public static void RegisterRepository(this IServiceCollection services)
         {
             services.AddDbContext<UserContext>(opt =>
             {
-                opt.UseInMemoryDatabase(connectionString);
+                opt.UseInMemoryDatabase("DesafioGlobalDatabase");
             });
 
             services.AddTransient<IUserRepository, UserRepository>();

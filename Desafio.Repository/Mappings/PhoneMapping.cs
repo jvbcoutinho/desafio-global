@@ -4,12 +4,11 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Desafio.Repository.Mappings
 {
-    public class UserMapping : IEntityTypeConfiguration<User>
+    public class PhoneMapping : IEntityTypeConfiguration<Phone>
     {
-        public void Configure(EntityTypeBuilder<User> builder)
+        public void Configure(EntityTypeBuilder<Phone> builder)
         {
-            builder.HasMany(x => x.Phones)
-                .WithOne();
+
         }
 
     }
