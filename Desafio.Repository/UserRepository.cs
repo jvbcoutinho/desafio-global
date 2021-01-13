@@ -1,8 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Desafio.Domain.UserAggregate;
 using Desafio.Repository.Context;
+using Microsoft.EntityFrameworkCore;
 
 namespace Desafio.Repository
 {
@@ -14,11 +17,17 @@ namespace Desafio.Repository
             _context = context;
         }
 
-        public void Criar(User user)
+        public async Task Criar(User user)
         {
-            _context.User.Add(user);
-            _context.SaveChanges();
+            await _context.User.AddAsync(user);
+            await _context.SaveChangesAsync();
         }
+
+        public async Task<User> GetOneByCriteria(Expression<Func<User, bool>> expression)
+        {
+            return await this._context.User.Where(expression).FirstOrDefaultAsync();
+        }
+
 
     }
 }
