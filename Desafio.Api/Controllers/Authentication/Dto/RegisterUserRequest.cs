@@ -1,7 +1,8 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using Desafio.Shared.Dto;
 
-namespace Desafio.Api.Dto
+namespace Desafio.Api.Authentication.Dto
 {
     public class RegisterUserRequest
     {
@@ -15,6 +16,6 @@ namespace Desafio.Api.Dto
         [Required(ErrorMessage = "Senha é um campo obrigátorio")]
         public string Password { get; set; }
 
-        public IList<Phone> Phones { get; set; }
+        public IList<PhoneDto> Phones { get; set; }
     }
 }

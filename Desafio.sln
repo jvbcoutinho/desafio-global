@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Desafio.Tests", "Desafio.Te
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Desafio.Repository", "Desafio.Repository\Desafio.Repository.csproj", "{66AA30D3-E0CA-4FE1-9DC0-3D88981C47D7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Desafio.Shared", "Desafio.Shared\Desafio.Shared.csproj", "{DFD6E09A-4038-4EE0-85CE-967C65176CCA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -86,5 +88,17 @@ Global
 		{66AA30D3-E0CA-4FE1-9DC0-3D88981C47D7}.Release|x64.Build.0 = Release|Any CPU
 		{66AA30D3-E0CA-4FE1-9DC0-3D88981C47D7}.Release|x86.ActiveCfg = Release|Any CPU
 		{66AA30D3-E0CA-4FE1-9DC0-3D88981C47D7}.Release|x86.Build.0 = Release|Any CPU
+		{DFD6E09A-4038-4EE0-85CE-967C65176CCA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DFD6E09A-4038-4EE0-85CE-967C65176CCA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DFD6E09A-4038-4EE0-85CE-967C65176CCA}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{DFD6E09A-4038-4EE0-85CE-967C65176CCA}.Debug|x64.Build.0 = Debug|Any CPU
+		{DFD6E09A-4038-4EE0-85CE-967C65176CCA}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{DFD6E09A-4038-4EE0-85CE-967C65176CCA}.Debug|x86.Build.0 = Debug|Any CPU
+		{DFD6E09A-4038-4EE0-85CE-967C65176CCA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DFD6E09A-4038-4EE0-85CE-967C65176CCA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DFD6E09A-4038-4EE0-85CE-967C65176CCA}.Release|x64.ActiveCfg = Release|Any CPU
+		{DFD6E09A-4038-4EE0-85CE-967C65176CCA}.Release|x64.Build.0 = Release|Any CPU
+		{DFD6E09A-4038-4EE0-85CE-967C65176CCA}.Release|x86.ActiveCfg = Release|Any CPU
+		{DFD6E09A-4038-4EE0-85CE-967C65176CCA}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

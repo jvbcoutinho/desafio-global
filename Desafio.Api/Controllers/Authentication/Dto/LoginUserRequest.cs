@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace Desafio.Api.Dto
+namespace Desafio.Api.Authentication.Dto
 {
     public class LoginUserRequest
     {
