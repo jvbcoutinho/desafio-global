@@ -1,19 +1,12 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using AutoMapper;
 using Desafio.Api.Controllers.Authentication.Dto;
 using Desafio.Application;
 using Desafio.Application.Authentication.Mapping;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 
 namespace Desafio.Api
 {
@@ -31,7 +24,7 @@ namespace Desafio.Api
         {
             services.AddControllers();
 
-            services.RegisterAuthApplication();
+            services.RegisterAuthService();
 
             services.AddAutoMapper(typeof(UserProfile), typeof(AuthenticationProfile));
 
@@ -56,6 +49,8 @@ namespace Desafio.Api
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 

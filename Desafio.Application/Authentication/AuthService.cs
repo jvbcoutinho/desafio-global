@@ -29,13 +29,14 @@ namespace Desafio.Application.Authentication
 
             //TODO: Alterar esta consulta para dapper
             if ((await _userRepository.GetOneByCriteria(x => x.Email == dto.Email)) != null)
-                businessException.AddError("E-mail já cadastrado!");
+                businessException.AddError("E-mail já existente");
 
             businessException.ValidateAndThrow();
 
-            //TODO: Generate JWT token;
-            var token = "fakeToken";
-            var user = new User(dto.Name, dto.Email, dto.Password, dto.Phones, token);
+            var user = new User(dto.Name, dto.Email, dto.Password, dto.Phones);
+
+            var token = TokenService.GenerateToken(user);
+            user.UpdateToken(token);
 
             await _userRepository.Criar(user);
 

@@ -17,7 +17,7 @@ namespace Desafio.Domain.UserAggregate
         public DateTime LastLogin { get; private set; }
         public string Token { get; private set; }
 
-        public User(string name, string email, string password, IList<PhoneDto> phones, string token)
+        public User(string name, string email, string password, IList<PhoneDto> phones)
         {
             Name = name;
             Email = email;
@@ -26,11 +26,15 @@ namespace Desafio.Domain.UserAggregate
             Created = DateTime.Now;
             Modified = DateTime.Now;
             LastLogin = DateTime.Now;
-            Token = token;
         }
 
         private User()
         {
+        }
+
+        public void UpdateToken(string token)
+        {
+            Token = token;
         }
     }
 }

@@ -5,6 +5,7 @@ using Desafio.Api.Authentication.Dto;
 using Desafio.Application.Authentication.Dto;
 using Desafio.Application.Authentication;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Desafio.Api.Controllers.Authentication
 {
@@ -17,8 +18,7 @@ namespace Desafio.Api.Controllers.Authentication
         public async Task<IActionResult> Register(
             RegisterUserRequest request,
             [FromServices] IAuthService authenticationService,
-            [FromServices] IMapper _mapper
-        )
+            [FromServices] IMapper _mapper)
         {
             if (!ModelState.IsValid)
                 return await Task.FromResult<IActionResult>(BadRequest(ModelState));
@@ -31,9 +31,21 @@ namespace Desafio.Api.Controllers.Authentication
         }
 
         [HttpPost("Login")]
-        public Task<IActionResult> Login(RegisterUserRequest request)
+        public Task<IActionResult> Login(
+            RegisterUserRequest request,
+            [FromServices] IAuthService authenticationService,
+            [FromServices] IMapper _mapper)
         {
             throw new NotImplementedException();
+        }
+
+        [HttpGet("")]
+        [Authorize]
+        public IActionResult Get(
+            [FromServices] IAuthService authenticationService,
+            [FromServices] IMapper _mapper)
+        {
+            return Ok(new { message = "Teste" });
         }
     }
 }
