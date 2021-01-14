@@ -20,31 +20,25 @@ namespace Desafio.Application.Authentication
 
         public async Task<LoginUserOutputDto> Login(LoginUserInputDto dto)
         {
-            var businessException = new BusinessException();
 
             //TODO: Alterar esta consulta para dapper
             var user = await _userRepository.GetOneByCriteria(x => x.Email == dto.Email);
 
-            //TODO: Alterar para NotFoundException
             if (user == null)
-                businessException.AddError("Usuário e/ou senha inválidos");
+                throw new NotFoundException("Usuário e/ou senha inválidos");
 
-            //TODO: Alterar para AuthenticationException
             if (user.Password != dto.Password)
-                businessException.AddError("Usuário e/ou senha inválidos");
+                throw new AuthenticationException("Usuário e/ou senha inválidos");
 
             return _mapper.Map<LoginUserOutputDto>(user);
         }
 
         public async Task<RegisterUserOutputDto> RegisterUser(RegisterUserInputDto dto)
         {
-            var businessException = new BusinessException();
 
             //TODO: Alterar esta consulta para dapper
             if ((await _userRepository.GetOneByCriteria(x => x.Email == dto.Email)) != null)
-                businessException.AddError("E-mail já existente");
-
-            businessException.ValidateAndThrow();
+                throw new BusinessException("E-mail já existente");
 
             var user = new User(dto.Name, dto.Email, dto.Password, dto.Phones);
 
