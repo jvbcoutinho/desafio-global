@@ -6,6 +6,8 @@ using Desafio.Application.Authentication.Dto;
 using Desafio.Application.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
+using System.Net.Http.Headers;
+using Desafio.API.Filter;
 
 namespace Desafio.Api.Controllers.Authentication
 {
@@ -46,17 +48,22 @@ namespace Desafio.Api.Controllers.Authentication
             return Ok(response);
         }
 
-        [HttpGet("")]
-        [Authorize]
-        public IActionResult Get(
+        [HttpGet("{id:guid}")]
+        public async Task<IActionResult> Get(
             [FromServices] IAuthService authenticationService,
-            [FromServices] IMapper _mapper)
+            [FromServices] IMapper _mapper,
+            [FromHeader] string authorization,
+            Guid id)
         {
-            //Todo: Ver forma mais elegante de obter o token
-            var accessToken = Request.Headers["Authorization"].ToString();
-            Console.WriteLine(accessToken.Split(' ')[1]);
-            
-            return Ok(new { message = "Teste" });
+            if (AuthenticationHeaderValue.TryParse(authorization, out var headerValue))
+            {
+                var token = headerValue.Parameter;
+                var response = await authenticationService.GetById(id, token);
+                return Ok(response);
+            }
+
+            return Unauthorized(new HttpResponseException("Não Autorizado"));
+
         }
     }
 }

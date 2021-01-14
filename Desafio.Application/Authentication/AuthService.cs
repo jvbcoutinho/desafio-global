@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -30,6 +31,10 @@ namespace Desafio.Application.Authentication
             if (user.Password != dto.Password)
                 throw new AuthenticationException("Usuário e/ou senha inválidos");
 
+            user.Login();
+
+            //TODO: UPDATE USER NO REPOSITÓRIO
+
             return _mapper.Map<LoginUserOutputDto>(user);
         }
 
@@ -45,7 +50,29 @@ namespace Desafio.Application.Authentication
             var token = TokenService.GenerateToken(user);
             user.UpdateToken(token);
 
-            await _userRepository.Criar(user);
+            await _userRepository.Create(user);
+
+            return _mapper.Map<RegisterUserOutputDto>(user);
+        }
+
+        public async Task<RegisterUserOutputDto> GetById(Guid id, string token)
+        {
+            if (!TokenService.ValidateToken(token))
+                throw new AuthenticationException("Não autorizado");
+
+            var user = await _userRepository.GetOneByCriteria(x => x.Id == id);
+
+            if (user == null)
+                throw new NotFoundException("Usuário não encontrado");
+
+            if (user.Token != token)
+                throw new AuthenticationException("Não autorizado");
+
+            Console.WriteLine("minutos:");
+            Console.WriteLine((DateTime.Now - user.LastLogin).TotalMinutes);
+
+            if (((DateTime.Now - user.LastLogin).TotalMinutes) > 30)
+                throw new AuthenticationException("Sessão inválida");
 
             return _mapper.Map<RegisterUserOutputDto>(user);
         }

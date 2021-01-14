@@ -1,5 +1,6 @@
 using Desafio.Domain.UserAggregate;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace Desafio.Repository.Context
 {
@@ -13,6 +14,9 @@ namespace Desafio.Repository.Context
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
+            ILoggerFactory logger = LoggerFactory.Create(c => c.AddConsole());
+            optionsBuilder.UseLoggerFactory(logger);
+
             base.OnConfiguring(optionsBuilder);
         }
 

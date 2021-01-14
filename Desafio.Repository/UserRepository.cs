@@ -17,7 +17,7 @@ namespace Desafio.Repository
             _context = context;
         }
 
-        public async Task Criar(User user)
+        public async Task Create(User user)
         {
             await _context.User.AddAsync(user);
             await _context.SaveChangesAsync();
@@ -25,7 +25,7 @@ namespace Desafio.Repository
 
         public async Task<User> GetOneByCriteria(Expression<Func<User, bool>> expression)
         {
-            return await this._context.User.Where(expression).FirstOrDefaultAsync();
+            return await this._context.User.Where(expression).Include(x => x.Phones).FirstOrDefaultAsync();
         }
 
 

@@ -7,7 +7,7 @@ namespace Desafio.Domain.UserAggregate
 {
     public interface IUserRepository
     {
-        Task Criar(User user);
+        Task Create(User user);
         Task<User> GetOneByCriteria(Expression<Func<User, bool>> expression);
     }
 }

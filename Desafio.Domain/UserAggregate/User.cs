@@ -24,8 +24,8 @@ namespace Desafio.Domain.UserAggregate
             Password = password;
             Phones = phones.Select(x => new Phone(x.Number, x.Ddd)).ToList();
             Created = DateTime.Now;
-            Modified = DateTime.Now;
-            LastLogin = DateTime.Now;
+            Modified = Created;
+            LastLogin = Created;
         }
 
         private User()
@@ -35,6 +35,11 @@ namespace Desafio.Domain.UserAggregate
         public void UpdateToken(string token)
         {
             Token = token;
+        }
+
+        public void Login()
+        {
+            LastLogin = DateTime.Now;
         }
     }
 }
