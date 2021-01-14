@@ -13,6 +13,9 @@ namespace Desafio.Application.Authentication.Mapping
             CreateMap<User, RegisterUserOutputDto>()
                 .ForMember(d => d.Phones, o => o.MapFrom(s => s.Phones));
 
+            CreateMap<User, LoginUserOutputDto>()
+                .ForMember(d => d.Phones, o => o.MapFrom(s => s.Phones));
+
         }
     }
 }

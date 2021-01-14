@@ -18,9 +18,22 @@ namespace Desafio.Application.Authentication
             _mapper = mapper;
         }
 
-        public Task<LoginUserOutputDto> Login(LoginUserInputDto nome)
+        public async Task<LoginUserOutputDto> Login(LoginUserInputDto dto)
         {
-            throw new System.NotImplementedException();
+            var businessException = new BusinessException();
+
+            //TODO: Alterar esta consulta para dapper
+            var user = await _userRepository.GetOneByCriteria(x => x.Email == dto.Email);
+
+            //TODO: Alterar para NotFoundException
+            if (user == null)
+                businessException.AddError("Usuário e/ou senha inválidos");
+
+            //TODO: Alterar para AuthenticationException
+            if (user.Password != dto.Password)
+                businessException.AddError("Usuário e/ou senha inválidos");
+
+            return _mapper.Map<LoginUserOutputDto>(user);
         }
 
         public async Task<RegisterUserOutputDto> RegisterUser(RegisterUserInputDto dto)

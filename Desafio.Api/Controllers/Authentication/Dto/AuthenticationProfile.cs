@@ -9,6 +9,7 @@ namespace Desafio.Api.Controllers.Authentication.Dto
         public AuthenticationProfile()
         {
             CreateMap<RegisterUserRequest, RegisterUserInputDto>();
+            CreateMap<LoginUserRequest, LoginUserInputDto>();
         }
 
     }
