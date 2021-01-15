@@ -40,7 +40,7 @@ namespace Desafio.Repository
                 try
                 {
                     connection.Open();
-                    var sql = @"SELECT * FROM [USER] WHERE Id = @Id";
+                    var sql = @"SELECT * FROM [USERS] WHERE Id = @Id";
                     var user = await connection.QueryFirstOrDefaultAsync<User>(sql, new { Id = id });
                     return user;
                 }
@@ -62,7 +62,7 @@ namespace Desafio.Repository
                 try
                 {
                     connection.Open();
-                    var sql = @"SELECT * FROM [USER] WHERE Email = @Email";
+                    var sql = @"SELECT * FROM [USERS] WHERE Email = @Email";
                     var user = await connection.QueryFirstOrDefaultAsync<User>(sql, new { Email = email });
                     return user;
                 }

@@ -8,6 +8,7 @@ namespace Desafio.Repository.Mappings
     {
         public void Configure(EntityTypeBuilder<User> builder)
         {
+            builder.ToTable("Users");
             builder.HasMany(x => x.Phones)
                 .WithOne();
         }

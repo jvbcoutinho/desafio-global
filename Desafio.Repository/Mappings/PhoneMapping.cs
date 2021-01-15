@@ -8,7 +8,7 @@ namespace Desafio.Repository.Mappings
     {
         public void Configure(EntityTypeBuilder<Phone> builder)
         {
-
+            builder.ToTable("Phones");
         }
 
     }
