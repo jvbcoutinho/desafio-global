@@ -28,6 +28,12 @@ namespace Desafio.Repository
             return await this._context.User.Where(expression).Include(x => x.Phones).FirstOrDefaultAsync();
         }
 
+        public async Task Update(User user)
+        {
+            _context.Entry(user).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
+        }
+
 
     }
 }

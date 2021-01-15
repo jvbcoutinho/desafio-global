@@ -22,7 +22,7 @@ namespace Desafio.Domain.UserAggregate
             Name = name;
             Email = email;
             Password = password;
-            Phones = phones.Select(x => new Phone(x.Number, x.Ddd)).ToList();
+            Phones = phones?.Select(x => new Phone(x.Number, x.Ddd)).ToList();
             Created = DateTime.Now;
             Modified = Created;
             LastLogin = Created;

@@ -9,5 +9,6 @@ namespace Desafio.Domain.UserAggregate
     {
         Task Create(User user);
         Task<User> GetOneByCriteria(Expression<Func<User, bool>> expression);
+        Task Update(User user);
     }
 }

@@ -33,7 +33,7 @@ namespace Desafio.Application.Authentication
 
             user.Login();
 
-            //TODO: UPDATE USER NO REPOSITÓRIO
+            await _userRepository.Update(user);
 
             return _mapper.Map<LoginUserOutputDto>(user);
         }
@@ -67,9 +67,6 @@ namespace Desafio.Application.Authentication
 
             if (user.Token != token)
                 throw new AuthenticationException("Não autorizado");
-
-            Console.WriteLine("minutos:");
-            Console.WriteLine((DateTime.Now - user.LastLogin).TotalMinutes);
 
             if (((DateTime.Now - user.LastLogin).TotalMinutes) > 30)
                 throw new AuthenticationException("Sessão inválida");
