@@ -4,6 +4,7 @@ using AutoMapper;
 using Desafio.Application.Authentication.Dto;
 using Desafio.Domain.UserAggregate;
 using Desafio.Shared.Exception;
+using Desafio.Shared.Utils;
 
 namespace Desafio.Application.Authentication
 {
@@ -26,7 +27,7 @@ namespace Desafio.Application.Authentication
             if (user == null)
                 throw new NotFoundException("Usuário e/ou senha inválidos");
 
-            if (user.Password != dto.Password)
+            if (user.Password != SecurityUtils.HashSHA1(dto.Password))
                 throw new AuthenticationException("Usuário e/ou senha inválidos");
 
             user.Login();
@@ -42,10 +43,9 @@ namespace Desafio.Application.Authentication
             if ((await _userRepository.GetByEmail(dto.Email)) != null)
                 throw new BusinessException("E-mail já existente");
 
-            var user = new User(dto.Name, dto.Email, dto.Password, dto.Phones);
+            var token = TokenService.GenerateToken(dto.Email);
 
-            var token = TokenService.GenerateToken(user);
-            user.UpdateToken(token);
+            var user = new User(dto.Name, dto.Email, dto.Password, dto.Phones, token);
 
             await _userRepository.Create(user);
 

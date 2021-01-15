@@ -18,6 +18,7 @@ namespace Desafio.Tests
         public AuthService AuthService;
         public Mock<IUserRepository> UserRepository;
         public IMapper Mapper;
+        public string ValidToken;
 
         public AuthServiceTests()
         {
@@ -25,6 +26,7 @@ namespace Desafio.Tests
             var configuration = new MapperConfiguration(cfg => cfg.AddProfile(new UserProfile()));
             Mapper = new Mapper(configuration);
             AuthService = new AuthService(UserRepository.Object, Mapper);
+            ValidToken = TokenService.GenerateToken("dev@global.com");
         }
 
         [Fact]
@@ -32,7 +34,7 @@ namespace Desafio.Tests
         {
             // Arrange
             var inputDto = new RegisterUserInputDto() { Name = "Dev", Email = "dev@global.com", Password = "123456#a" };
-            var user = new User("Dev", "dev@global.com", "123456#a", new List<PhoneDto>());
+            var user = new User("Dev", "dev@global.com", "123456#a", new List<PhoneDto>(), ValidToken);
             await AuthService.RegisterUser(inputDto);
 
             UserRepository.Setup(c => c.GetByEmail(inputDto.Email))
@@ -114,7 +116,7 @@ namespace Desafio.Tests
         {
             // Arrange
             var inputDto = new LoginUserInputDto() { Email = "dev@global.com", Password = "123456#a" };
-            var user = new User("Dev", "dev@global.com", "11111111", new List<PhoneDto>());
+            var user = new User("Dev", "dev@global.com", "11111111", new List<PhoneDto>(), ValidToken);
 
             UserRepository.Setup(c => c.GetByEmail(inputDto.Email))
                 .ReturnsAsync(user);
@@ -129,7 +131,7 @@ namespace Desafio.Tests
         {
             // Arrange
             var inputDto = new LoginUserInputDto() { Email = "dev@global.com", Password = "123456#a" };
-            var user = new User("Dev", "dev@global.com", "123456#a", new List<PhoneDto>());
+            var user = new User("Dev", "dev@global.com", "123456#a", new List<PhoneDto>(), ValidToken);
             var intialLastLogin = user.LastLogin;
 
             //Act
@@ -146,10 +148,10 @@ namespace Desafio.Tests
         public async void When_GetUserPassInvalidToken_Expect_ThrowAuthenticationException()
         {
             // Arrange
-            var user = new User("Dev", "dev@global.com", "11111111", new List<PhoneDto>());
+            var user = new User("Dev", "dev@global.com", "11111111", new List<PhoneDto>(), ValidToken);
             var id = user.Id;
 
-            var invalidToken = TokenService.GenerateToken(user) + "d";
+            var invalidToken = ValidToken + "d";
 
             // Act & Assert
             var exception = await Assert.ThrowsAsync<AuthenticationException>(async () => await AuthService.GetById(id, invalidToken));
@@ -160,11 +162,10 @@ namespace Desafio.Tests
         public async void When_GetUserPassValidButDiferentToken_Expect_ThrowAuthenticationException()
         {
             // Arrange
-            var user = new User("Dev", "dev@global.com", "11111111", new List<PhoneDto>());
-            var incorrectUser = new User("Suport", "suport@global.com", "13", new List<PhoneDto>());
+            var user = new User("Dev", "dev@global.com", "11111111", new List<PhoneDto>(), ValidToken);
             var id = user.Id;
 
-            var incorrectToken = TokenService.GenerateToken(incorrectUser);
+            var incorrectToken = TokenService.GenerateToken("suport@global.com");
 
             UserRepository.Setup(c => c.GetById(id))
                 .ReturnsAsync(user);
@@ -178,10 +179,10 @@ namespace Desafio.Tests
         public async void When_GetUserPassIncorrectId_Expect_ThrowNotFoundException()
         {
             // Arrange
-            var user = new User("Dev", "dev@global.com", "11111111", new List<PhoneDto>());
+            var user = new User("Dev", "dev@global.com", "11111111", new List<PhoneDto>(), ValidToken);
             var id = user.Id;
 
-            var validToken = TokenService.GenerateToken(user);
+            var validToken = TokenService.GenerateToken(user.Email);
 
             UserRepository.Setup(c => c.GetById(id))
                 .ReturnsAsync((User)null);
@@ -195,17 +196,14 @@ namespace Desafio.Tests
         public async void When_GetUser_Expect_ReturnUser()
         {
             // Arrange
-            var user = new User("Dev", "dev@global.com", "11111111", new List<PhoneDto>());
+            var user = new User("Dev", "dev@global.com", "11111111", new List<PhoneDto>(), ValidToken);
             var id = user.Id;
-
-            var validToken = TokenService.GenerateToken(user);
-            user.UpdateToken(validToken);
 
             UserRepository.Setup(c => c.GetById(id))
                 .ReturnsAsync(user);
 
             // Act
-            var result = await AuthService.GetById(id, validToken);
+            var result = await AuthService.GetById(id, ValidToken);
 
             // Assert
             Assert.Equal(result.Id, user.Id);

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Desafio.Domain.UserAggregate.ValueObject;
 using Desafio.Shared.Dto;
+using Desafio.Shared.Utils;
 
 namespace Desafio.Domain.UserAggregate
 {
@@ -17,24 +18,20 @@ namespace Desafio.Domain.UserAggregate
         public DateTime LastLogin { get; private set; }
         public string Token { get; private set; }
 
-        public User(string name, string email, string password, IList<PhoneDto> phones)
+        public User(string name, string email, string password, IList<PhoneDto> phones, string token)
         {
             Name = name;
             Email = email;
-            Password = password;
+            Password = SecurityUtils.HashSHA1(password);
             Phones = phones?.Select(x => new Phone(x.Number, x.Ddd)).ToList();
             Created = DateTime.Now;
             Modified = Created;
             LastLogin = Created;
+            Token = token;
         }
 
         private User()
         {
-        }
-
-        public void UpdateToken(string token)
-        {
-            Token = token;
         }
 
         public void Login()

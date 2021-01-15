@@ -8,7 +8,6 @@ namespace Desafio.Application.Authentication.Dto
     {
         public string Name { get; set; }
         public string Email { get; set; }
-        public string Password { get; set; }
         public IList<PhoneDto> Phones { get; set; }
         public Guid Id { get; set; }
         public DateTime Created { get; set; }
