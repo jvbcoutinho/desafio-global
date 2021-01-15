@@ -11,7 +11,7 @@ namespace Desafio.Application
 {
     public static class ConfigurationModule
     {
-        public static void RegisterAuthService(this IServiceCollection services)
+        public static void RegisterAuthService(this IServiceCollection services, IConfiguration configuration)
         {
 
             var key = Encoding.ASCII.GetBytes(Settings.Secret);
@@ -36,7 +36,7 @@ namespace Desafio.Application
 
             services.AddScoped<IAuthService, AuthService>();
 
-            services.RegisterRepository();
+            services.RegisterRepository(configuration.GetConnectionString("connectionString"));
         }
     }
 }

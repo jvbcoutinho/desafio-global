@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using Desafio.Application.Authentication.Dto;
@@ -22,8 +21,7 @@ namespace Desafio.Application.Authentication
         public async Task<LoginUserOutputDto> Login(LoginUserInputDto dto)
         {
 
-            //TODO: Alterar esta consulta para dapper
-            var user = await _userRepository.GetOneByCriteria(x => x.Email == dto.Email);
+            var user = await _userRepository.GetByEmail(dto.Email);
 
             if (user == null)
                 throw new NotFoundException("Usuário e/ou senha inválidos");
@@ -41,8 +39,7 @@ namespace Desafio.Application.Authentication
         public async Task<RegisterUserOutputDto> RegisterUser(RegisterUserInputDto dto)
         {
 
-            //TODO: Alterar esta consulta para dapper
-            if ((await _userRepository.GetOneByCriteria(x => x.Email == dto.Email)) != null)
+            if ((await _userRepository.GetByEmail(dto.Email)) != null)
                 throw new BusinessException("E-mail já existente");
 
             var user = new User(dto.Name, dto.Email, dto.Password, dto.Phones);
@@ -60,7 +57,7 @@ namespace Desafio.Application.Authentication
             if (!TokenService.ValidateToken(token))
                 throw new AuthenticationException("Não autorizado");
 
-            var user = await _userRepository.GetOneByCriteria(x => x.Id == id);
+            var user = await _userRepository.GetById(id);
 
             if (user == null)
                 throw new NotFoundException("Usuário não encontrado");

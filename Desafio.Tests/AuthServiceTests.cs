@@ -35,7 +35,7 @@ namespace Desafio.Tests
             var user = new User("Dev", "dev@global.com", "123456#a", new List<PhoneDto>());
             await AuthService.RegisterUser(inputDto);
 
-            UserRepository.Setup(c => c.GetOneByCriteria(x => x.Email == inputDto.Email))
+            UserRepository.Setup(c => c.GetByEmail(inputDto.Email))
                 .ReturnsAsync(user);
 
             // Act & Assert
@@ -101,7 +101,7 @@ namespace Desafio.Tests
             // Arrange
             var inputDto = new LoginUserInputDto() { Email = "dev@global.com", Password = "123456#a" };
 
-            UserRepository.Setup(c => c.GetOneByCriteria(x => x.Email == inputDto.Email))
+            UserRepository.Setup(c => c.GetByEmail(inputDto.Email))
                 .ReturnsAsync((User)null);
 
             // Act & Assert
@@ -116,7 +116,7 @@ namespace Desafio.Tests
             var inputDto = new LoginUserInputDto() { Email = "dev@global.com", Password = "123456#a" };
             var user = new User("Dev", "dev@global.com", "11111111", new List<PhoneDto>());
 
-            UserRepository.Setup(c => c.GetOneByCriteria(x => x.Email == inputDto.Email))
+            UserRepository.Setup(c => c.GetByEmail(inputDto.Email))
                 .ReturnsAsync(user);
 
             // Act & Assert
@@ -133,7 +133,7 @@ namespace Desafio.Tests
             var intialLastLogin = user.LastLogin;
 
             //Act
-            UserRepository.Setup(c => c.GetOneByCriteria(x => x.Email == inputDto.Email))
+            UserRepository.Setup(c => c.GetByEmail(inputDto.Email))
                 .ReturnsAsync(user);
 
             var result = await AuthService.Login(inputDto);
@@ -166,7 +166,7 @@ namespace Desafio.Tests
 
             var incorrectToken = TokenService.GenerateToken(incorrectUser);
 
-            UserRepository.Setup(c => c.GetOneByCriteria(x => x.Id == id))
+            UserRepository.Setup(c => c.GetById(id))
                 .ReturnsAsync(user);
 
             // Act & Assert
@@ -183,7 +183,7 @@ namespace Desafio.Tests
 
             var validToken = TokenService.GenerateToken(user);
 
-            UserRepository.Setup(c => c.GetOneByCriteria(x => x.Id == id))
+            UserRepository.Setup(c => c.GetById(id))
                 .ReturnsAsync((User)null);
 
             // Act & Assert
@@ -201,7 +201,7 @@ namespace Desafio.Tests
             var validToken = TokenService.GenerateToken(user);
             user.UpdateToken(validToken);
 
-            UserRepository.Setup(c => c.GetOneByCriteria(x => x.Id == id))
+            UserRepository.Setup(c => c.GetById(id))
                 .ReturnsAsync(user);
 
             // Act

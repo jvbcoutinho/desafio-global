@@ -8,7 +8,8 @@ namespace Desafio.Domain.UserAggregate
     public interface IUserRepository
     {
         Task Create(User user);
-        Task<User> GetOneByCriteria(Expression<Func<User, bool>> expression);
         Task Update(User user);
+        Task<User> GetById(Guid id);
+        Task<User> GetByEmail(string email);
     }
 }

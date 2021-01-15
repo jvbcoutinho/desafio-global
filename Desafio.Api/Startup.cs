@@ -28,7 +28,9 @@ namespace Desafio.Api
                 o.Filters.Add(new HttpResponseExceptionFilter());
             });
 
-            services.RegisterAuthService();
+            services.AddSingleton<IConfiguration>(Configuration);
+
+            services.RegisterAuthService(Configuration);
 
             services.AddAutoMapper(typeof(UserProfile), typeof(AuthenticationProfile));
 
