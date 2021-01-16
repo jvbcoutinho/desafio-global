@@ -27,7 +27,7 @@ namespace Desafio.Domain.UserAggregate
             Created = DateTime.Now;
             Modified = Created;
             LastLogin = Created;
-            Token = token;
+            Token = SecurityUtils.HashSHA1(token); ;
         }
 
         private User()

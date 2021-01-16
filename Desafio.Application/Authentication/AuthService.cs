@@ -34,7 +34,10 @@ namespace Desafio.Application.Authentication
 
             await _userRepository.Update(user);
 
-            return _mapper.Map<LoginUserOutputDto>(user);
+            var outputDto = _mapper.Map<LoginUserOutputDto>(user);
+            outputDto.Token = TokenService.GenerateToken(dto.Email);
+
+            return outputDto;
         }
 
         public async Task<RegisterUserOutputDto> RegisterUser(RegisterUserInputDto dto)
@@ -49,7 +52,10 @@ namespace Desafio.Application.Authentication
 
             await _userRepository.Create(user);
 
-            return _mapper.Map<RegisterUserOutputDto>(user);
+            var outputDto = _mapper.Map<RegisterUserOutputDto>(user);
+            outputDto.Token = token;
+
+            return outputDto;
         }
 
         public async Task<RegisterUserOutputDto> GetById(Guid id, string token)
@@ -62,7 +68,7 @@ namespace Desafio.Application.Authentication
             if (user == null)
                 throw new NotFoundException("Usuário não encontrado");
 
-            if (user.Token != token)
+            if (user.Token != SecurityUtils.HashSHA1(token))
                 throw new AuthenticationException("Não autorizado");
 
             if (((DateTime.Now - user.LastLogin).TotalMinutes) > 30)

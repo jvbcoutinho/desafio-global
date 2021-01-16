@@ -14,6 +14,9 @@ namespace Desafio.Application
         public static string GenerateToken(string email)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
+
+            tokenHandler.SetDefaultTimesOnTokenCreation = false;
+
             var key = Encoding.ASCII.GetBytes(Settings.Secret);
             var tokenDescriptor = new SecurityTokenDescriptor
             {
