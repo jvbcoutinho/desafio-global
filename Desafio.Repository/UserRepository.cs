@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Dapper;
 using Desafio.Domain.UserAggregate;
@@ -33,16 +35,24 @@ namespace Desafio.Repository
 
         public async Task<User> GetById(Guid id)
         {
-            // return await this._context.User.Where(x => x.Id == id).Include(x => x.Phones).FirstOrDefaultAsync();
-
             using (var connection = new SqlConnection(_configuration.GetConnectionString("connectionString")))
             {
                 try
                 {
                     connection.Open();
-                    var sql = @"SELECT * FROM [USERS] WHERE Id = @Id";
-                    var user = await connection.QueryFirstOrDefaultAsync<User>(sql, new { Id = id });
-                    return user;
+                    var sql = @"SELECT * FROM [Users]
+                                LEFT JOIN [Phones] ON [Users].[Id] = [Phones].[UserId]
+                                WHERE [Users].[Id] = @Id";
+                    var user = await connection.QueryAsync<User, Phone, User>(sql, (u, p) =>
+                                {
+                                    u.Phones = new List<Phone>();
+                                    u.Phones.Add(p);
+                                    return u;
+                                },
+                                new { Id = id },
+                                splitOn: "UserId"
+                            );
+                    return user.FirstOrDefault();
                 }
                 catch (Exception ex)
                 {
