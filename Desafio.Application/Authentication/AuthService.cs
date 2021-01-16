@@ -19,7 +19,7 @@ namespace Desafio.Application.Authentication
             _mapper = mapper;
         }
 
-        public async Task<LoginUserOutputDto> Login(LoginUserInputDto dto)
+        public async Task<UserOutputDto> Login(LoginUserInputDto dto)
         {
 
             var user = await _userRepository.GetByEmail(dto.Email);
@@ -34,13 +34,13 @@ namespace Desafio.Application.Authentication
 
             await _userRepository.Update(user);
 
-            var outputDto = _mapper.Map<LoginUserOutputDto>(user);
+            var outputDto = _mapper.Map<UserOutputDto>(user);
             outputDto.Token = TokenService.GenerateToken(dto.Email);
 
             return outputDto;
         }
 
-        public async Task<RegisterUserOutputDto> RegisterUser(RegisterUserInputDto dto)
+        public async Task<UserOutputDto> RegisterUser(RegisterUserInputDto dto)
         {
 
             if ((await _userRepository.GetByEmail(dto.Email)) != null)
@@ -52,13 +52,13 @@ namespace Desafio.Application.Authentication
 
             await _userRepository.Create(user);
 
-            var outputDto = _mapper.Map<RegisterUserOutputDto>(user);
+            var outputDto = _mapper.Map<UserOutputDto>(user);
             outputDto.Token = token;
 
             return outputDto;
         }
 
-        public async Task<RegisterUserOutputDto> GetById(Guid id, string token)
+        public async Task<UserOutputDto> GetById(Guid id, string token)
         {
             if (!TokenService.ValidateToken(token))
                 throw new AuthenticationException("Não autorizado");
@@ -74,7 +74,7 @@ namespace Desafio.Application.Authentication
             if (((DateTime.Now - user.LastLogin).TotalMinutes) > 30)
                 throw new AuthenticationException("Sessão inválida");
 
-            return _mapper.Map<RegisterUserOutputDto>(user);
+            return _mapper.Map<UserOutputDto>(user);
         }
     }
 }

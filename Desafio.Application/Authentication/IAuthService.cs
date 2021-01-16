@@ -6,9 +6,8 @@ namespace Desafio.Application.Authentication
 {
     public interface IAuthService
     {
-        Task<RegisterUserOutputDto> RegisterUser(RegisterUserInputDto dto);
-        Task<LoginUserOutputDto> Login(LoginUserInputDto nome);
-
-        Task<RegisterUserOutputDto> GetById(Guid id, string token);
+        Task<UserOutputDto> RegisterUser(RegisterUserInputDto dto);
+        Task<UserOutputDto> Login(LoginUserInputDto nome);
+        Task<UserOutputDto> GetById(Guid id, string token);
     }
 }

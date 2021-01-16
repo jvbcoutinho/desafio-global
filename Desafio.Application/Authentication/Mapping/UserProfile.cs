@@ -10,10 +10,7 @@ namespace Desafio.Application.Authentication.Mapping
         public UserProfile()
         {
             CreateMap<Phone, PhoneDto>();
-            CreateMap<User, RegisterUserOutputDto>()
-                .ForMember(d => d.Phones, o => o.MapFrom(s => s.Phones));
-
-            CreateMap<User, LoginUserOutputDto>()
+            CreateMap<User, UserOutputDto>()
                 .ForMember(d => d.Phones, o => o.MapFrom(s => s.Phones));
 
         }

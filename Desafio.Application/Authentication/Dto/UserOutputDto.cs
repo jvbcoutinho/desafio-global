@@ -4,7 +4,7 @@ using Desafio.Shared.Dto;
 
 namespace Desafio.Application.Authentication.Dto
 {
-    public class RegisterUserOutputDto
+    public class UserOutputDto
     {
         public string Name { get; set; }
         public string Email { get; set; }
