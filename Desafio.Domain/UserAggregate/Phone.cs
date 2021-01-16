@@ -4,7 +4,7 @@ namespace Desafio.Domain.UserAggregate
 {
     public class Phone : Entity
     {
-        public Guid UserId { get; set; }
+        public string UserId { get; set; }
         public string Number { get; set; }
         public string Ddd { get; set; }
 

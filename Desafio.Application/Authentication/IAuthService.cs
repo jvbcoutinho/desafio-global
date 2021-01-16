@@ -8,6 +8,6 @@ namespace Desafio.Application.Authentication
     {
         Task<UserOutputDto> RegisterUser(RegisterUserInputDto dto);
         Task<UserOutputDto> Login(LoginUserInputDto nome);
-        Task<UserOutputDto> GetById(Guid id, string token);
+        Task<UserOutputDto> GetById(string id, string token);
     }
 }

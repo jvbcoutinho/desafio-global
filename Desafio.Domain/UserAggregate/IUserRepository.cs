@@ -9,7 +9,7 @@ namespace Desafio.Domain.UserAggregate
     {
         Task Create(User user);
         Task Update(User user);
-        Task<User> GetById(Guid id);
+        Task<User> GetById(string id);
         Task<User> GetByEmail(string email);
     }
 }

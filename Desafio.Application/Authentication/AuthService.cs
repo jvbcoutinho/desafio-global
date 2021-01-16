@@ -27,7 +27,7 @@ namespace Desafio.Application.Authentication
             if (user == null)
                 throw new NotFoundException("Usuário e/ou senha inválidos");
 
-            if (user.Password != SecurityUtils.HashSHA1(dto.Password))
+            if (user.PasswordHash != SecurityUtils.HashSHA1(dto.Password))
                 throw new AuthenticationException("Usuário e/ou senha inválidos");
 
             user.Login();
@@ -58,7 +58,7 @@ namespace Desafio.Application.Authentication
             return outputDto;
         }
 
-        public async Task<UserOutputDto> GetById(Guid id, string token)
+        public async Task<UserOutputDto> GetById(string id, string token)
         {
             if (!TokenService.ValidateToken(token))
                 throw new AuthenticationException("Não autorizado");

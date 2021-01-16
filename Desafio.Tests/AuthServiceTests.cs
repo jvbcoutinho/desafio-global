@@ -68,7 +68,7 @@ namespace Desafio.Tests
             var result = await AuthService.RegisterUser(inputDto);
 
             // Assert
-            Assert.NotEqual(Guid.Empty, result.Id);
+            Assert.NotEqual(String.Empty, result.Id);
         }
 
         [Fact]

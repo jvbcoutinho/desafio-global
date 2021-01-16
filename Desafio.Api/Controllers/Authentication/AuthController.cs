@@ -48,12 +48,12 @@ namespace Desafio.Api.Controllers.Authentication
             return Ok(response);
         }
 
-        [HttpGet("{id:guid}")]
+        [HttpGet("{id}")]
         public async Task<IActionResult> Get(
             [FromServices] IAuthService authenticationService,
             [FromServices] IMapper _mapper,
             [FromHeader] string authorization,
-            Guid id)
+            string id)
         {
             if (AuthenticationHeaderValue.TryParse(authorization, out var headerValue))
             {

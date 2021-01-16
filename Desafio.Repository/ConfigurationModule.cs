@@ -1,5 +1,6 @@
 using Desafio.Domain.UserAggregate;
 using Desafio.Repository.Context;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -13,6 +14,10 @@ namespace Desafio.Repository
             {
                 opt.UseSqlServer(connectionString);
             });
+
+            services.AddIdentity<User, IdentityRole>()
+                    .AddEntityFrameworkStores<UserContext>();
+
 
             services.AddTransient<IUserRepository, UserRepository>();
         }
