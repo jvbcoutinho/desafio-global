@@ -26,6 +26,9 @@ namespace Desafio.Api
             services.AddControllers(o =>
             {
                 o.Filters.Add(new HttpResponseExceptionFilter());
+            }).ConfigureApiBehaviorOptions(c =>
+            {
+                c.SuppressModelStateInvalidFilter = true;
             });
 
             services.AddSingleton<IConfiguration>(Configuration);
