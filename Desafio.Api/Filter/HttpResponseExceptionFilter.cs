@@ -1,3 +1,4 @@
+using System.Linq;
 using Desafio.Shared.Exception;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
@@ -31,6 +32,17 @@ namespace Desafio.API.Filter
             else if (context.Exception is NotFoundException nex)
             {
                 var responseException = new HttpResponseException(nex.Message);
+
+                context.Result = new ObjectResult(responseException)
+                {
+                    StatusCode = (int)System.Net.HttpStatusCode.NotFound
+                };
+                context.ExceptionHandled = true;
+            }
+            else if (context.Result is BadRequestObjectResult && context.ModelState?.ValidationState == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid)
+            {
+                var message = context.ModelState.FirstOrDefault().Value.Errors.FirstOrDefault().ErrorMessage;
+                var responseException = new HttpResponseException(message);
 
                 context.Result = new ObjectResult(responseException)
                 {
