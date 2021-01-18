@@ -12,7 +12,7 @@
 
 - [x] JWT como token
 - [x] Testes unitários
-- [ ] Usar o ASP .NET Identity
+- [x] Usar o ASP .NET Identity  *(branch identity)*
 - [x] Criptogafia não reversível (hash) na senha e no token
 - [x] Criar um Dockerfile para executarmos a aplicação via Docker
 
