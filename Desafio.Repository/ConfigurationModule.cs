@@ -11,7 +11,7 @@ namespace Desafio.Repository
         {
             services.AddDbContext<UserContext>(opt =>
             {
-                opt.UseSqlServer(connectionString);
+                opt.UseInMemoryDatabase(connectionString);
             });
 
             services.AddTransient<IUserRepository, UserRepository>();
