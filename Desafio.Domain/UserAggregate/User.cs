@@ -16,11 +16,11 @@ namespace Desafio.Domain.UserAggregate
         public string Token { get; private set; }
         public IList<Phone> Phones { get; set; }
 
-        public User(string name, string email, string password, IList<PhoneDto> phones, string token)
+        public User(string name, string email, IList<PhoneDto> phones, string token)
         {
+            UserName = email;
             Name = name;
             Email = email;
-            PasswordHash = SecurityUtils.HashSHA1(password);
             Phones = phones?.Select(x => new Phone(x.Number, x.Ddd)).ToList();
             Created = DateTime.Now;
             Modified = Created;

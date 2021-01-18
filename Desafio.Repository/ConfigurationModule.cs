@@ -15,11 +15,11 @@ namespace Desafio.Repository
                 opt.UseSqlServer(connectionString);
             });
 
-            services.AddIdentity<User, IdentityRole>()
-                    .AddEntityFrameworkStores<UserContext>();
+            services.AddIdentity<User, IdentityRole>(options =>
+            {
+                options.User.RequireUniqueEmail = true;
 
-
-            services.AddTransient<IUserRepository, UserRepository>();
+            }).AddEntityFrameworkStores<UserContext>();
         }
     }
 }

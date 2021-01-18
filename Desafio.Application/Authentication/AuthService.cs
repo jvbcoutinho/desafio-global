@@ -5,34 +5,35 @@ using Desafio.Application.Authentication.Dto;
 using Desafio.Domain.UserAggregate;
 using Desafio.Shared.Exception;
 using Desafio.Shared.Utils;
+using Microsoft.AspNetCore.Identity;
 
 namespace Desafio.Application.Authentication
 {
     public class AuthService : IAuthService
     {
-        private readonly IUserRepository _userRepository;
+        private readonly SignInManager<User> _signInManager;
+        private readonly UserManager<User> _userManager;
         private readonly IMapper _mapper;
 
-        public AuthService(IUserRepository userRepository, IMapper mapper)
+        public AuthService(IMapper mapper, UserManager<User> userManager, SignInManager<User> signInManager)
         {
-            _userRepository = userRepository;
             _mapper = mapper;
+            _userManager = userManager;
+            _signInManager = signInManager;
         }
 
         public async Task<UserOutputDto> Login(LoginUserInputDto dto)
         {
+            var result = await _signInManager.PasswordSignInAsync(dto.Email, dto.Password, false, false);
 
-            var user = await _userRepository.GetByEmail(dto.Email);
-
-            if (user == null)
-                throw new NotFoundException("Usuário e/ou senha inválidos");
-
-            if (user.PasswordHash != SecurityUtils.HashSHA1(dto.Password))
+            if (!result.Succeeded)
                 throw new AuthenticationException("Usuário e/ou senha inválidos");
+
+            var user = await _userManager.FindByEmailAsync(dto.Email);
 
             user.Login();
 
-            await _userRepository.Update(user);
+            await _userManager.UpdateAsync(user);
 
             var outputDto = _mapper.Map<UserOutputDto>(user);
             outputDto.Token = TokenService.GenerateToken(dto.Email);
@@ -43,19 +44,21 @@ namespace Desafio.Application.Authentication
         public async Task<UserOutputDto> RegisterUser(RegisterUserInputDto dto)
         {
 
-            if ((await _userRepository.GetByEmail(dto.Email)) != null)
+            if ((await _userManager.FindByEmailAsync(dto.Email)) != null)
                 throw new BusinessException("E-mail já existente");
 
             var token = TokenService.GenerateToken(dto.Email);
 
-            var user = new User(dto.Name, dto.Email, dto.Password, dto.Phones, token);
+            var user = new User(dto.Name, dto.Email, dto.Phones, token);
 
-            await _userRepository.Create(user);
+            await _userManager.CreateAsync(user, dto.Password);
 
+            await _signInManager.SignInAsync(user, false);
             var outputDto = _mapper.Map<UserOutputDto>(user);
             outputDto.Token = token;
 
             return outputDto;
+
         }
 
         public async Task<UserOutputDto> GetById(string id, string token)
@@ -63,7 +66,7 @@ namespace Desafio.Application.Authentication
             if (!TokenService.ValidateToken(token))
                 throw new AuthenticationException("Não autorizado");
 
-            var user = await _userRepository.GetById(id);
+            var user = await _userManager.FindByIdAsync(id);
 
             if (user == null)
                 throw new NotFoundException("Usuário não encontrado");
