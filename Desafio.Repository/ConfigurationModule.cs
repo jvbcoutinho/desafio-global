@@ -12,7 +12,7 @@ namespace Desafio.Repository
         {
             services.AddDbContext<UserContext>(opt =>
             {
-                opt.UseSqlServer(connectionString);
+                opt.UseInMemoryDatabase(connectionString);
             });
 
             services.AddIdentity<User, IdentityRole>(options =>

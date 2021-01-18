@@ -77,7 +77,10 @@ namespace Desafio.Application.Authentication
             if (((DateTime.Now - user.LastLogin).TotalMinutes) > 30)
                 throw new AuthenticationException("Sessão inválida");
 
-            return _mapper.Map<UserOutputDto>(user);
+            var outputDto = _mapper.Map<UserOutputDto>(user);
+            outputDto.Token = TokenService.GenerateToken(user.Email);
+
+            return outputDto;
         }
     }
 }
